@@ -1,0 +1,99 @@
+﻿@model Footballer
+
+@{ var TeamNames = @ViewData["ListTeamNames"] as List<string>;}
+
+<h1>Исправь данные футболиста</h1>
+<p>На этой странице вы можете исправить либо удалить данные.</p>
+
+@if (Model is null)
+{
+    <div class="exception-edit">
+        <p class="text-danger">Простите, но в нашей базе нету футболиста с таким id</p>
+    </div>
+}
+else
+{
+<form method="post">
+
+    <div class="form-element">
+        <label asp-for="Id"></label>
+        <input asp-for="Id" readonly />
+    </div>
+
+    <div class="form-element">
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName" />
+        <span class="text-danger" asp-validation-for="FirstName"></span>
+    </div>
+
+    <div class="form-element">
+        <label asp-for="LastName"></label>
+        <input asp-for="LastName" />
+        <span class="text-danger" asp-validation-for="LastName"></span>
+    </div>
+
+    <div class="form-element">
+        <label asp-for="Gender"></label>
+        <div class="radio_button">
+            <div class="radio_button_content">
+                <input type="radio" asp-for="Gender.GenderName" value="Мужчина" />
+                <span>Мужчина</span>
+            </div>
+            <div class="radio_button_content">
+                <input type="radio" asp-for="Gender.GenderName" value="Женщина" />
+                <span>Женщина</span>
+            </div>
+        </div>
+        <span class="text-danger" asp-validation-for="Gender.GenderName"></span>
+    </div>
+
+    <div class="form-element">
+        <label asp-for="Birthday"></label>
+        <input type="date" asp-for="Birthday" />
+        <span class="text-danger" asp-validation-for="Birthday"></span>
+    </div>
+
+    <div class="form-element">
+        <label asp-for="TeamName"></label>
+        <div class="dropdown">
+            <input type="text" asp-for="TeamName.NameTeam" />
+            <select onchange="this.previousElementSibling.value=this.value; this.previousElementSibling.focus()">
+                <option hidden></option>
+                @if (@TeamNames.Count() > 0)
+                {
+                    @foreach (string teamName in @TeamNames)
+                    {
+                        <option>@teamName</option>
+                    }
+                }
+                else
+                {
+                    <option disabled>Нету данных</option>
+                }
+            </select>
+        </div>
+        <span class="text-danger" asp-validation-for="TeamName"></span>
+    </div>
+
+    <div class="form-element">
+        <label asp-for="Country"></label>
+        <div class="dropdown">
+            <input type="text" readonly asp-for="Country.CountryName" />
+            <select onchange="this.previousElementSibling.value=this.value; this.previousElementSibling.focus()">
+                <option>Россия</option>
+                <option>США</option>
+                <option>Италия</option>
+            </select>
+        </div>
+        <span class="text-danger" class="text-danger" asp-validation-for="Country"></span>
+    </div>
+
+
+    <input class="btn btn-primary mt-4" id="sendBtn" type="submit" value="Отправить" />
+    <input class="btn btn-danger mt-1" id="delete" type="submit" asp-action="Delete" asp-controller="Footballers" value="Удалить" />
+</form>
+}
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+<script src="~/js/SignalToEdit.js"></script>

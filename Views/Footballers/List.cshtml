@@ -1,0 +1,35 @@
+﻿@model List<Footballer>
+
+    <h1>Список футболистов</h1>
+    <p>На этой странице вы можете ознакомиться со всеми футболистами, добавленными в базу данных. Так же вы можете отредактировать данные, если они содержат ошибки.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <td>Имя</td>
+                <td>Фамилия</td>
+                <td>Пол</td>
+                <td>Дата рождения</td>
+                <td>Команда</td>
+                <td>Страна</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody id="tbody-of-footballers">
+            @foreach (var footballer in Model)
+            {
+            <tr id="@footballer.Id">
+                <td>@footballer.FirstName</td>
+                <td>@footballer.LastName</td>
+                <td>@footballer.Gender.GenderName</td>
+                <td>@footballer.Birthday</td>
+                <td>@footballer.TeamName.NameTeam</td>
+                <td>@footballer.Country.CountryName</td>
+                <td><a class="btn btn-primary" href="/footballers/edit/@footballer.Id">Править</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+    <script src="~/js/SignalToList.js" charset="windows-1251" asp-append-version="true"></script>
